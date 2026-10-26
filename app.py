@@ -412,6 +412,16 @@ def results():
         raise QuizException("Failed to load results")
 
 
+@app.route('/leaderboard')
+def leaderboard():
+    top_users = (User.query
+                 .filter(User.high_score > 0)
+                 .order_by(User.high_score.desc(), User.attempts.asc())
+                 .limit(10)
+                 .all())
+    return render_template('leaderboard.html', top_users=top_users)
+
+
 @app.route('/admin/questions')
 def manage_questions():
     if 'user_id' not in session:

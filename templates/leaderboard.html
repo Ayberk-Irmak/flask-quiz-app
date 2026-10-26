@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Liderlik Tablosu - PythonQuiz{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="lb-title"><i class="fas fa-trophy"></i> Liderlik Tablosu</h1>
+    <p class="lb-subtitle">En yüksek skora sahip ilk 10 oyuncu.</p>
+
+    {% if top_users %}
+    <table class="lb-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Kullanıcı</th>
+                <th>En Yüksek Skor</th>
+                <th>Deneme</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in top_users %}
+            <tr{% if loop.index <= 3 %} class="lb-top"{% endif %}>
+                <td class="lb-rank">{{ loop.index }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.high_score }}</td>
+                <td>{{ user.attempts }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="lb-empty">Henüz skor yok. İlk sıraya geçmek için <a href="{{ url_for('home') }}">sınava başla</a>!</p>
+    {% endif %}
+</div>
+
+<style>
+    .lb-title {
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+    }
+    .lb-subtitle {
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+    }
+    .lb-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .lb-table th, .lb-table td {
+        padding: 0.9rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    .lb-table th {
+        color: var(--text-light);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .lb-rank {
+        font-weight: 700;
+        color: var(--primary);
+    }
+    .lb-top {
+        background-color: var(--light);
+    }
+    .lb-empty {
+        color: var(--text-light);
+    }
+</style>
+{% endblock %}
